@@ -40,37 +40,46 @@ def bisection(a,b):
             a = c
     return c
 
+def guessUpdate(posCycle, val1, val2):
+    if (posCycle):
+        return val1+val2
+    return val1-val2
+
 def guessBoundries(boundry, delta = 10, initialGuess = 0):
     expectedRoots = 1
     positiveVals = []
     negativeVals = []
     roots = []
     tempGuess = initialGuess
-    while (expectedRoots > len(roots) and not checkWithinBoundry(tempGuess,boundry)):
-        print (tempGuess)
+    posCycle = 1
+    while (expectedRoots > len(roots)):
+        if(checkWithinBoundry(tempGuess,boundry) and posCycle == 1):
+            posCycle = 0
+        elif(checkWithinBoundry(tempGuess,boundry) and posCycle == 0):
+            break;
+        else:
+            pass
         if ( getfuncval(tempGuess) > 0 ):
             positiveVals.append(tempGuess)
-            temp_root = bisection (tempGuess, tempGuess+ delta)
+            temp_root = bisection (tempGuess, guessUpdate(posCycle, tempGuess, delta))
             if (temp_root !=  None):
                 roots.append(temp_root)
-                negativeVals.append(tempGuess+ delta)
+                negativeVals.append(guessUpdate(posCycle, tempGuess, delta))
         elif ( getfuncval(tempGuess) < 0 ):
-            negativeVals.append(initialGuess)
-            temp_root = bisection (tempGuess, initialGuess+ delta)
+            negativeVals.append(tempGuess)
+            temp_root = bisection (tempGuess, guessUpdate(posCycle, tempGuess, delta))
             if (temp_root !=  None):
                 roots.append(temp_root)
-                positiveVals.append(tempGuess+ delta)
+                positiveVals.append(guessUpdate(posCycle, tempGuess, delta))
         else:
             roots.append(tempGuess)
-        tempGuess = tempGuess + delta
+        tempGuess = guessUpdate(posCycle, tempGuess, delta)
     return roots
 
 def main():
-    a = 10
-    b= -10
-    final_value = bisection(a, b)
-    print( guessBoundries(100) )
-    print('final' , bisection(a, b))
+    
+    print( 'roots are ',guessBoundries(100) )
+    print('bisec' , bisection(-10, 10))
 
 if __name__== "__main__" :
     main()
