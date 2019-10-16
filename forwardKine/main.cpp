@@ -83,16 +83,16 @@ Matrix2D<T> multiply2DMatrix(Matrix2D<T>& A, Matrix2D<T>& B){
         perror("matrix A column and B row mismatch for multiplication.");
         exit(-1);
     }
-    Matrix2D<T> mat_data(A.getRowSz(), B.getColSz());
-    mat_data.initVal(0);
+    Matrix2D<T>* mat_data = new Matrix2D<T>(A.getRowSz(), B.getColSz());
+    mat_data->initVal(0);
     for(int i=0; i<A.getRowSz(); ++i){
          for(int j=0; j<B.getColSz(); ++j){
             for(int k=0; k<A.getColSz(); ++k) {
-                mat_data.addToElement(i,j,A.getElement(i,k)*B.getElement(k,j));
+                mat_data->addToElement(i,j,A.getElement(i,k)*B.getElement(k,j));
             }
         }
     }
-    return mat_data;
+    return *mat_data;
 }
 
 template <typename T>
