@@ -113,7 +113,7 @@ class Matrix2D{
             }
         }
         void addTwoMatrix(Matrix2D<T>& A, Matrix2D<T>& B){
-            if(A.getColSz() != B.getColSz()|| this->getRowSz() != A.getRowSz()){
+            if(A.getColSz() != B.getColSz()|| B->getRowSz() != A.getRowSz()){
                 perror("matrix A column and B row mismatch for addition.");
                 exit(-1);
             }
