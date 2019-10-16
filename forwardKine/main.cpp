@@ -76,25 +76,25 @@ class Matrix2D{
             }
         }
 };
-
+/*
 template <typename T>
-Matrix2D<T> multiply2DMatrix(Matrix2D<T>& A, Matrix2D<T>& B){
+Matrix2D<T> multiply2DMatrix(Matrix2D<T>& A, Matrix2D<T>& B, Matrix2D<T>& mat_data){
     if(A.getColSz() != B.getRowSz()){
         perror("matrix A column and B row mismatch for multiplication.");
         exit(-1);
     }
-    Matrix2D<T>* mat_data = new Matrix2D<T>(A.getRowSz(), B.getColSz());
-    mat_data->initVal(0);
+    //Matrix2D<T> mat_data(A.getRowSz(), B.getColSz());
+    mat_data.initVal(0);
     for(int i=0; i<A.getRowSz(); ++i){
          for(int j=0; j<B.getColSz(); ++j){
             for(int k=0; k<A.getColSz(); ++k) {
-                mat_data->addToElement(i,j,A.getElement(i,k)*B.getElement(k,j));
+                mat_data.addToElement(i,j,A.getElement(i,k)*B.getElement(k,j));
             }
         }
     }
     return *mat_data;
 }
-
+*/
 template <typename T>
 class Matrix4x4: public Matrix2D<T>{    
 public:
@@ -244,13 +244,18 @@ int main(int argc, char *argv[]){
     B.setDelta(deltaZ);
     C.setDelta(deltaX);
     D.setTheta(thetaX);
-    Matrix2D<double> product = multiply2DMatrix(A,B);
-    product = multiply2DMatrix(product,C);
-    product = multiply2DMatrix(product,D);
+    /*
+    Matrix2D<T> product_mat;
+    multiply2DMatrix(A,B,product_mat);
+    multiply2DMatrix(product_mat,C, product_mat);
+    multiply2DMatrix(product_mat,D, product_mat);
+    */
     DHjoint<double> dhjoint;
     dhjoint.transform(thetaZ,thetaX,deltaZ, deltaX);
     cout << "prodcut = " <<endl;
-    product.print();
+    /*
+    product_mat.print();
+    */
     cout << "DHjoint = " <<endl;
     dhjoint.print();
     dhjoint.printDisplacement();
