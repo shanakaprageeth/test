@@ -133,7 +133,7 @@ class Matrix2D{
                 perror("matrix A column and B row mismatch for multiplication.");
                 exit(-1);
             }
-            this->initializeMem(A.getRowSz(), A.getColSz());  
+            this->initializeMem(A.getRowSz(),B.getColSz());  
             this->initVal(0);
             for(int i=0; i<A.getRowSz(); ++i){
                  for(int j=0; j<B.getColSz(); ++j){
