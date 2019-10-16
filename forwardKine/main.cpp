@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iomanip>
 #define PI 3.14159265
+
 using namespace std;
 
 template <typename T>
@@ -93,9 +94,7 @@ class Matrix2D{
             }
             for(int i=0; i<this->getRowSz(); ++i){
                  for(int j=0; j<this->getColSz(); ++j){
-                    for(int k=0; k<this->getColSz(); ++k) {
-                        this->addToElement(i,j,A.getElement(k,j));
-                    }
+                    this->addToElement(i,j,A.getElement(i,j));
                 }
             }
         }
@@ -121,10 +120,8 @@ class Matrix2D{
             this->initVal(0);
             for(int i=0; i<this->getRowSz(); ++i){
                  for(int j=0; j<this->getColSz(); ++j){
-                    for(int k=0; k<this->getColSz(); ++k) {
-                        this->addToElement(i,j,A.getElement(k,j));
-                        this->addToElement(i,j,B.getElement(k,j));
-                    }
+                    this->addToElement(i,j,A.getElement(i,j));
+                    this->addToElement(i,j,B.getElement(i,j));
                 }
             }
         }
