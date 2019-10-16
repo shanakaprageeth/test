@@ -1,10 +1,26 @@
 
 import logging
+import argparse
 
 logging.basicConfig(level=logging.ERROR)
 
+boundary = 1000
+noOfRoots= 1
+a0=-1
+a1=0
+a2=1
+a3=0
+def solve(a_0,a_1,a_2,a_3):
+    global a0,a1,a2,a3
+    a0 = a_0
+    a1 = a_1
+    a2 = a_2
+    a3 = a_3    
+    return guessBoundries(1000,expectedRoots = 3)
+
 #please define polynomial here
-def getfuncval(x , a0 =-1, a1 = 0, a2 =1, a3= 0):
+def getfuncval(x):
+    global a0,a1,a2,a3
     y = a0 + a1 * x + a2 * x * x + a3 * x * x * x
     return y
 
@@ -48,8 +64,7 @@ def guessUpdate(posCycle, val1, val2):
     return val1-val2
 
 # create guessues within the boundary
-def guessBoundries(boundry, delta = 10, initialGuess = 0):
-    expectedRoots = 2
+def guessBoundries(boundry, delta = 10, initialGuess = 0,expectedRoots =1):
     positiveVals = []
     negativeVals = []
     roots = []
@@ -78,9 +93,11 @@ def guessBoundries(boundry, delta = 10, initialGuess = 0):
     return roots
 
 def main():
-    
-    print('guessed roots are ',guessBoundries(100) )
+    global noOfRoots
+    global boundary
+    print('guessed roots are ',guessBoundries(boundary,expectedRoots = noOfRoots) )
     print('roots for your guesses using bisection method are' , bisection(-10, 0))
+    print(solve(-1,0,1,0))
 
 if __name__== "__main__" :
     main()
