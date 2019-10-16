@@ -3,10 +3,12 @@ import logging
 
 logging.basicConfig(level=logging.ERROR)
 
-def getfuncval(x , a0 =1, a1 = 1, a2 =0, a3= 0):
+#please define polynomial here
+def getfuncval(x , a0 =-1, a1 = 0, a2 =1, a3= 0):
     y = a0 + a1 * x + a2 * x * x + a3 * x * x * x
     return y
 
+# check whether a number within the a margin
 def checkWithinBoundry(val, margin = 0.01):
     if(val >= 0 and val < margin):
         logging.debug("val is {0}:".format(val))
@@ -45,20 +47,19 @@ def guessUpdate(posCycle, val1, val2):
         return val1+val2
     return val1-val2
 
+# create guessues within the boundary
 def guessBoundries(boundry, delta = 10, initialGuess = 0):
-    expectedRoots = 1
+    expectedRoots = 2
     positiveVals = []
     negativeVals = []
     roots = []
     tempGuess = initialGuess
     posCycle = 1
     while (expectedRoots > len(roots)):
-        if(checkWithinBoundry(tempGuess,boundry) and posCycle == 1):
+        if(not checkWithinBoundry(tempGuess,boundry) and posCycle == 0):
+            break
+        elif(not checkWithinBoundry(tempGuess,boundry) and posCycle == 1):
             posCycle = 0
-        elif(checkWithinBoundry(tempGuess,boundry) and posCycle == 0):
-            break;
-        else:
-            pass
         if ( getfuncval(tempGuess) > 0 ):
             positiveVals.append(tempGuess)
             temp_root = bisection (tempGuess, guessUpdate(posCycle, tempGuess, delta))
@@ -78,8 +79,8 @@ def guessBoundries(boundry, delta = 10, initialGuess = 0):
 
 def main():
     
-    print( 'roots are ',guessBoundries(100) )
-    print('bisec' , bisection(-10, 10))
+    print('guessed roots are ',guessBoundries(100) )
+    print('roots for your guesses using bisection method are' , bisection(-10, 0))
 
 if __name__== "__main__" :
     main()
