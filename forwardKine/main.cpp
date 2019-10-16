@@ -18,6 +18,10 @@ class Matrix2D{
         int col;
     public:
         T** mat_data;
+        Matrix2D(){
+            row = 0;
+            col = 0;
+        }
         Matrix2D(int row_sz, int col_sz){
             row = row_sz;
             col = col_sz;
@@ -29,6 +33,13 @@ class Matrix2D{
             for(int i = 0; i < row; i++)
                 delete[] mat_data[i];
             delete[] mat_data;
+        }
+        void initializeMem(int row_sz, int col_sz){
+            row = row_sz;
+            col = col_sz;
+            mat_data = new T*[row];
+            for(int i = 0; i < row; i++)
+                mat_data[i] = new T[col];
         }
         void initRandom(){
             for (int i=0; i < row; i++){
@@ -73,6 +84,63 @@ class Matrix2D{
                     cout << fixed <<setprecision(6) << setfill('0')<<setw(6)<< +mat_data[i][j] << "  " ;
                 }
                 cout <<endl;
+            }
+        }
+        void addwithMatrix(Matrix2D<T>& A){            
+            if(this->getColSz() != A.getColSz()|| this->getRowSz() != A.getRowSz()){
+                perror("matrix A column and B row mismatch for addition.");
+                exit(-1);
+            }
+            for(int i=0; i<this->getRowSz(); ++i){
+                 for(int j=0; j<this->getColSz(); ++j){
+                    for(int k=0; k<this->getColSz(); ++k) {
+                        this->addToElement(i,j,A.getElement(k,j));
+                    }
+                }
+            }
+        }
+        void multipywithMatrix(Matrix2D<T>& A){
+            if(this->getColSz() != A.getRowSz()){
+                perror("matrix A column and B row mismatch for multiplication.");
+                exit(-1);
+            }
+            for(int i=0; i<this->getRowSz(); ++i){
+                 for(int j=0; j<A.getColSz(); ++j){
+                    for(int k=0; k<this->getColSz(); ++k) {
+                        this->addToElement(i,j,this->getElement(i,k)*A.getElement(k,j));
+                    }
+                }
+            }
+        }
+        void addTwoMatrix(Matrix2D<T>& A, Matrix2D<T>& B){
+            if(A.getColSz() != B.getColSz()|| this->getRowSz() != A.getRowSz()){
+                perror("matrix A column and B row mismatch for addition.");
+                exit(-1);
+            }
+            this->initializeMem(A.getRowSz(), A.getColSz());                        
+            this->initVal(0);
+            for(int i=0; i<this->getRowSz(); ++i){
+                 for(int j=0; j<this->getColSz(); ++j){
+                    for(int k=0; k<this->getColSz(); ++k) {
+                        this->addToElement(i,j,A.getElement(k,j));
+                        this->addToElement(i,j,B.getElement(k,j));
+                    }
+                }
+            }
+        }
+        void multiplyTwoMatrix(Matrix2D<T>& A, Matrix2D<T>& B){            
+            if(A.getColSz() != B.getRowSz()){
+                perror("matrix A column and B row mismatch for multiplication.");
+                exit(-1);
+            }
+            this->initializeMem(A.getRowSz(), A.getColSz());  
+            this->initVal(0);
+            for(int i=0; i<A.getRowSz(); ++i){
+                 for(int j=0; j<B.getColSz(); ++j){
+                    for(int k=0; k<A.getColSz(); ++k) {
+                        this->addToElement(i,j,A.getElement(i,k)*B.getElement(k,j));
+                    }
+                }
             }
         }
 };
@@ -250,12 +318,14 @@ int main(int argc, char *argv[]){
     multiply2DMatrix(product_mat,C, product_mat);
     multiply2DMatrix(product_mat,D, product_mat);
     */
+    Matrix2D<double> product_mat;
+    product_mat.multiplyTwoMatrix(A,B);
     DHjoint<double> dhjoint;
     dhjoint.transform(thetaZ,thetaX,deltaZ, deltaX);
     cout << "prodcut = " <<endl;
-    /*
+    
     product_mat.print();
-    */
+    
     cout << "DHjoint = " <<endl;
     dhjoint.print();
     dhjoint.printDisplacement();
